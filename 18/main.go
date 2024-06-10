@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"sync/atomic"
 	"time"
 )
 
 type Counter struct {
-	sync.RWMutex
 	Value atomic.Uint32
 }
 
@@ -17,14 +15,10 @@ func NewCounter() *Counter {
 }
 
 func (c *Counter) Inc() {
-	c.Lock()
-	defer c.Unlock()
 	c.Value.Add(1)
 }
 
 func (c *Counter) GetValue() uint32 {
-	c.RLock()
-	defer c.RUnlock()
 	return c.Value.Load()
 }
 
