@@ -30,16 +30,12 @@ func main() {
 		}
 	}(ctx, ch)
 
-	go func(c context.Context, ch chan int) {
-		for {
-			select {
-			case <-c.Done():
-				return
-			case ch <- rand.Int():
-				time.Sleep(time.Millisecond * 100)
-			}
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case ch <- rand.Int():
+			time.Sleep(time.Millisecond * 100)
 		}
-	}(ctx, ch)
-
-	<-ctx.Done()
+	}
 }
